@@ -72,11 +72,8 @@ get_data <- function(curYear, baseURL, tbl, cycle_nbr) {
     
     message(q)
     
-    r <- httr::POST(URLencode(url),
-                    # convert whitespace to ascii %20
-                    body = q)
-    
-    
+    r <- httr::POST(URLencode(url), body = q )
+
     out <- read.csv(textConnection(content(r, 'text')))
     
     Sys.sleep(5)
@@ -84,6 +81,8 @@ get_data <- function(curYear, baseURL, tbl, cycle_nbr) {
     names(out) <- sub("^X", "", names(out))
     
     out <- out %>%
+
+      dplyr::mutate_all(as.character) %>%
       
       tidyr::pivot_longer(
         !c(Region.country.area, Technology),
@@ -103,8 +102,7 @@ get_data <- function(curYear, baseURL, tbl, cycle_nbr) {
         Publication_Cycle,
         Publication_Year,
         Observation_Value
-      ) %>%
-      na.exclude()
+      )
     
     outfiles[[q]] <- out
     
