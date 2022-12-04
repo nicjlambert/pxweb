@@ -115,9 +115,12 @@ get_data <- function(curYear, baseURL, tbl, cycle_nbr) {
     outfiles[[q]] <- out
     
   }
-  
+
+  # Convert list of dataframes to a single dataframe
   df <- as.data.frame(do.call(rbind, outfiles), row.names = FALSE)
   df$Region_Country_Area <- gsub("[/*]", "", df$Region_Country_Area)
+
+  # Write the combined results dataframe to a csv file
   write.csv(
     df,
     paste0(
