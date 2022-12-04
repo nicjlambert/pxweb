@@ -51,6 +51,8 @@ tbl <- 'RECAP'
 baseURL <-  'https://pxweb.irena.org:443/api/v1/en/IRENASTAT/Power Capacity and Generation/'
 
 get_data <- function(curYear, baseURL, tbl, cycle_nbr) {
+
+  # Specify the url to the API endpoint
   url <-
     paste0(baseURL, tbl, '_', curYear, '_cycle', cycle_nbr, '.px')
   
@@ -59,10 +61,15 @@ get_data <- function(curYear, baseURL, tbl, cycle_nbr) {
     url,
     '\n\nPOST API query sent as JSON towards the URL:\n\n'
   ))
-  
+
+  # Create a vector of values for the "technology" attribute
+  technologies <- 0:18
+
   outfiles <- list()
   
-  for (i in 0:1) {
+  for (technology in technologies) {
+
+    # Create a query object with the "technology" attribute and its value
     q <-
       paste0(
         '{"query":[{"code":"Technology","selection":{"filter":"item","values":["',
@@ -71,7 +78,8 @@ get_data <- function(curYear, baseURL, tbl, cycle_nbr) {
       )
     
     message(q)
-    
+
+    # POST the query to the API endpoint
     r <- httr::POST(URLencode(url), body = q )
 
     out <- read.csv(textConnection(content(r, 'text')))
