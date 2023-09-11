@@ -1,4 +1,3 @@
-#' Author: nicholas.lambert
 #' Description: Download and tidy data from IRENA API
 #' (1) The for loop enables multiple API calls. And uses 'Technology' for the
 #'     pagination of API requests (see note 1)
