@@ -51,7 +51,6 @@ baseURL <-  'https://pxweb.irena.org:443/api/v1/en/IRENASTAT/Power Capacity and 
 
 get_data <- function(curYear, baseURL, tbl, cycle_nbr) {
 
-  # Specify the url to the API endpoint
   url <-
     paste0(baseURL, tbl, '_', curYear, '_cycle', cycle_nbr, '.px')
   
@@ -68,7 +67,6 @@ get_data <- function(curYear, baseURL, tbl, cycle_nbr) {
   
   for (technology in technologies) {
 
-    # Create a query object with the "technology" attribute and its value
     q <-
       paste0(
         '{"query":[{"code":"Technology","selection":{"filter":"item","values":["',
@@ -119,7 +117,6 @@ get_data <- function(curYear, baseURL, tbl, cycle_nbr) {
   df <- as.data.frame(do.call(rbind, outfiles), row.names = FALSE)
   df$Region_Country_Area <- gsub("[/*]", "", df$Region_Country_Area)
 
-  # Write the combined results dataframe to a csv file
   write.csv(
     df,
     paste0(
